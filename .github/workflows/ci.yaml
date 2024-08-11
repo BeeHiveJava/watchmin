@@ -38,3 +38,30 @@ jobs:
     - name: Dotnet test
       run: dotnet test
       working-directory: ${{ env.SERVER_DIRECTORY }}
+
+  client:
+    runs-on: ubuntu-latest
+
+    env:
+      CLIENT_DIRECTORY: Watchmin.Client
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+
+    - name: Dotnet setup
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Dotnet restore
+      run: dotnet restore
+      working-directory: ${{ env.CLIENT_DIRECTORY }}
+
+    - name: Dotnet build
+      run: dotnet build
+      working-directory: ${{ env.CLIENT_DIRECTORY }}
+
+    - name: Dotnet test
+      run: dotnet test
+      working-directory: ${{ env.CLIENT_DIRECTORY }}

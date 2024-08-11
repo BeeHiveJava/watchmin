@@ -39,3 +39,31 @@ jobs:
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  client:
+    runs-on: ubuntu-latest
+
+    env:
+      CLIENT_DIRECTORY: Watchmin.Client
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+      with:
+        fetch-depth: 0
+
+    - name: Run sonar
+      uses: highbyte/sonarscan-dotnet@v2.3.2
+      with:
+        sonarProjectKey: watchmin-client
+        sonarProjectName: watchmin-client
+        sonarOrganization: beehivejava
+        dotnetBuildArguments: ${{ env.CLIENT_DIRECTORY }}
+        dotnetTestArguments: ${{ env.CLIENT_DIRECTORY }} --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+        sonarBeginArguments: >-
+          /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml"
+          /d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx"
+          /d:sonar.exclusions="**/Examples/**"
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
