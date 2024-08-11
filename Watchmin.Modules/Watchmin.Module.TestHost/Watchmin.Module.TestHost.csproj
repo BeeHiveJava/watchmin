@@ -7,16 +7,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Watchmin.Module\Watchmin.Module.csproj" />
+        <ProjectReference Include="..\Watchmin.Module\Watchmin.Module.csproj"/>
     </ItemGroup>
-    
+
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="8.0.7" />
+        <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="8.0.7"/>
         <PackageReference Include="NUnit" Version="4.1.0"/>
     </ItemGroup>
 
     <ItemGroup>
         <Using Include="NUnit.Framework"/>
     </ItemGroup>
-    
+
 </Project>

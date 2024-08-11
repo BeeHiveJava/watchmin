@@ -9,12 +9,5 @@
     <ItemGroup>
         <FrameworkReference Include="Microsoft.AspNetCore.App"/>
     </ItemGroup>
-
-    <ItemGroup>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Protobuf Include="**\*.proto" GrpcServices="Server"/>
-    </ItemGroup>
-
+    
 </Project>

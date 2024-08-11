@@ -12,3 +12,11 @@ public abstract class WatchminModuleBootstrapperConfiguration : IWatchminModuleB
     {
     }
 }
+
+public interface IWatchminModuleBootstrapperConfiguration
+{
+    void ConfigureServices(WebApplicationBuilder builder);
+
+    void ConfigureApplication(WebApplication application);
+}
+

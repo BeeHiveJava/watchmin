@@ -1,40 +1,33 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.Hosting;
 
 namespace Watchmin.Module.TestHost;
 
-public abstract class WatchminModuleTestBase<T> : WatchminModuleTestBase
-    where T : WatchminModuleBootstrapperConfiguration, new()
+public abstract class WatchminModuleTestBase<TConfiguration>
+    where TConfiguration : WatchminModuleBootstrapperConfiguration, new()
 {
-    protected override WatchminModuleBootstrapper Bootstrapper => new WatchminModuleBootstrapper<WatchminModuleTestConfiguration<T>>();
-}
-
-public abstract class WatchminModuleTestBase
-{
+    protected WebApplication? Application { get; private set; }
     protected HttpClient? Client { get; private set; }
     protected TestServer? Server { get; private set; }
 
     [SetUp]
-    public void Setup()
+    public async Task Setup()
     {
-        var application = Create();
-        application.Start();
+        Application = Bootstrapper.Create();
+        await Application.StartAsync();
 
-        Server = application.GetTestServer();
-        Client = application.GetTestClient();
+        Server = Application.GetTestServer();
+        Client = Application.GetTestClient();
     }
 
     [TearDown]
-    public void Teardown()
+    public async Task Teardown()
     {
+        await (Application?.StopAsync() ?? Task.CompletedTask);
+        await (Application?.DisposeAsync() ?? ValueTask.CompletedTask);
         Client?.Dispose();
         Server?.Dispose();
     }
 
-    protected virtual WebApplication Create() =>
-        Bootstrapper.Create();
-
-    protected virtual WatchminModuleBootstrapper Bootstrapper =>
-        new WatchminModuleBootstrapper<WatchminModuleTestConfiguration>();
+    private WatchminModuleBootstrapper<WatchminModuleTestConfiguration<TConfiguration>> Bootstrapper => new();
 }
