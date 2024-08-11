@@ -4,14 +4,10 @@ name: lint
 # yamllint disable-line rule:truthy
 on:
   push:
-    branches:
-    - main
-    - develop
+    branches: ["**"]
 
   pull_request:
-    branches:
-    - main
-    - develop
+    branches: ["**"]
 
 jobs:
   editorconfig-checker:

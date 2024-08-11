@@ -1,26 +1,20 @@
 ---
-name: ci
+name: release
 
 # yamllint disable-line rule:truthy
 on:
-  pull_request:
-    branches: [main, releases/v*]
-
   push:
-    branches: [main, releases/v*]
+    tags: ["**"]
 
 jobs:
-  ci:
+  release:
     name: ${{ matrix.solution.name }}
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
         solution:
-        - name: Watchmin.Server
-        - name: Watchmin.Client
         - name: Watchmin.Modules
-          nuget: true
 
     steps:
     - name: Checkout code
@@ -46,35 +40,17 @@ jobs:
       working-directory: ${{ matrix.solution.name }}
 
     - name: Dotnet build
-      run: dotnet build --no-restore
+      run: dotnet build --no-restore --configuration "Release"
       working-directory: ${{ matrix.solution.name }}
 
-    - name: Dotnet test
-      run: dotnet test --no-build
+    - name: Dotnet pack
+      run: dotnet pack --no-build --configuration "Release" /p:Version="${{ github.ref_name }}"
       working-directory: ${{ matrix.solution.name }}
 
-  tag:
-    runs-on: ubuntu-latest
-    needs: ci
-
-    permissions:
-      contents: write
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
-      with:
-        fetch-depth: 0
-
-    - name: Get commit sha
-      run: echo "value=`echo ${{ github.sha }} | cut -c1-8`" >> "$GITHUB_OUTPUT"
-      id: sha
-
-    - name: Create tag
-      uses: anothrNick/github-tag-action@v1
-      env:
-        WITH_V: true
-        RELEASE_BRANCHES: releases/v.*
-        PRERELEASE: ${{ ! startsWith(github.ref, 'releases/v') }}
-        PRERELEASE_SUFFIX: ${{ steps.sha.outputs.value }}
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Dotnet push
+      run: >-
+        dotnet nuget push
+        --source "github"
+        --api-key "${{ secrets.GITHUB_TOKEN }}"
+        "**/*.nupkg"
+      working-directory: ${{ matrix.solution.name }}
