@@ -1,0 +1,40 @@
+---
+name: ci
+
+# yamllint disable-line rule:truthy
+on:
+  pull_request:
+    branches:
+    - main
+
+  push:
+    branches:
+    - main
+
+jobs:
+  server:
+    runs-on: ubuntu-latest
+
+    env:
+      SERVER_DIRECTORY: Watchmin.Server
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+
+    - name: Dotnet setup
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Dotnet restore
+      run: dotnet restore
+      working-directory: ${{ env.SERVER_DIRECTORY }}
+
+    - name: Dotnet build
+      run: dotnet build
+      working-directory: ${{ env.SERVER_DIRECTORY }}
+
+    - name: Dotnet test
+      run: dotnet test
+      working-directory: ${{ env.SERVER_DIRECTORY }}
