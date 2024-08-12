@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.TestHost;
 
 namespace Watchmin.Module.TestHost;
 
+[ExcludeFromCodeCoverage]
 internal class WatchminModuleTestConfiguration<TConfiguration> : IWatchminModuleBootstrapperConfiguration
     where TConfiguration : class, IWatchminModuleBootstrapperConfiguration, new()
 {

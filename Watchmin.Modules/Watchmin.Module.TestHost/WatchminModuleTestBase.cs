@@ -1,8 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.TestHost;
 
 namespace Watchmin.Module.TestHost;
 
+[ExcludeFromCodeCoverage]
 public abstract class WatchminModuleTestBase<TConfiguration>
     where TConfiguration : WatchminModuleBootstrapperConfiguration, new()
 {
@@ -29,5 +31,5 @@ public abstract class WatchminModuleTestBase<TConfiguration>
         Server?.Dispose();
     }
 
-    private WatchminModuleBootstrapper<WatchminModuleTestConfiguration<TConfiguration>> Bootstrapper => new();
+    private static WatchminModuleBootstrapper<WatchminModuleTestConfiguration<TConfiguration>> Bootstrapper => new();
 }
