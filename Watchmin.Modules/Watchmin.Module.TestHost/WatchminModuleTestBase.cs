@@ -1,35 +1,48 @@
 using System.Diagnostics.CodeAnalysis;
-using Microsoft.AspNetCore.Builder;
+using MassTransit;
+using MassTransit.Testing;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Watchmin.Module.TestHost;
 
 [ExcludeFromCodeCoverage]
-public abstract class WatchminModuleTestBase<TConfiguration>
-    where TConfiguration : WatchminModuleBootstrapperConfiguration, new()
+public abstract class WatchminModuleTestBase<TProgram> where TProgram : class
 {
-    protected WebApplication? Application { get; private set; }
-    protected HttpClient? Client { get; private set; }
-    protected TestServer? Server { get; private set; }
+    private WebApplicationFactory<TProgram> ApplicationFactory { get; set; } = default!;
+    protected TestServer Server => ApplicationFactory.Server;
+    protected HttpClient Client => ApplicationFactory.CreateClient();
+    protected ITestHarness TestHarness => ApplicationFactory.Services.GetTestHarness();
+    protected IServiceProvider ServiceProvider => ApplicationFactory.Services;
 
     [SetUp]
-    public async Task Setup()
+    public void Setup()
     {
-        Application = Bootstrapper.Create();
-        await Application.StartAsync();
-
-        Server = Application.GetTestServer();
-        Client = Application.GetTestClient();
+        ApplicationFactory = new WebApplicationFactory<TProgram>().WithWebHostBuilder(Configure);
     }
 
     [TearDown]
     public async Task Teardown()
     {
-        await (Application?.StopAsync() ?? Task.CompletedTask);
-        await (Application?.DisposeAsync() ?? ValueTask.CompletedTask);
-        Client?.Dispose();
-        Server?.Dispose();
+        await ApplicationFactory.DisposeAsync();
     }
 
-    private static WatchminModuleBootstrapper<WatchminModuleTestConfiguration<TConfiguration>> Bootstrapper => new();
+    private void Configure(IWebHostBuilder builder)
+    {
+        builder.UseTestServer();
+        builder.ConfigureTestServices(collection =>
+        {
+            ConfigureServices(collection);
+            collection.AddMassTransitTestHarness(options =>
+            {
+                options.SetDefaultRequestTimeout(TimeSpan.FromSeconds(1));
+            });
+        });
+    }
+
+    protected virtual void ConfigureServices(IServiceCollection services)
+    {
+    }
 }

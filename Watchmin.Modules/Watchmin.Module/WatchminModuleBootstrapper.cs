@@ -1,30 +1,36 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.Collections.Frozen;
+using System.Reflection;
+using Microsoft.AspNetCore.Builder;
+using Watchmin.Module.Configuration;
 
 namespace Watchmin.Module;
 
-public class WatchminModuleBootstrapper<TConfiguration>(string[]? args = null)
-    where TConfiguration : class, IWatchminModuleBootstrapperConfiguration, new()
+internal class WatchminModuleBootstrapper(Assembly assembly, string[]? args = null)
 {
-    private readonly WatchminModuleBootstrapperConfigurationComposite _configuration = new([
-        new TConfiguration()
-    ]);
-
     public Task RunAsync()
     {
         return Create().RunAsync();
     }
 
-    public WebApplication Create()
+    private WebApplication Create()
     {
         var application = CreateBuilder().Build();
-        _configuration.ConfigureApplication(application);
+        GetApplicationContext(application).ConfigureFromAssembly();
         return application;
     }
 
     private WebApplicationBuilder CreateBuilder()
     {
         var builder = WebApplication.CreateBuilder(args ?? []);
-        _configuration.ConfigureServices(builder);
+        GetBuilderContext(builder).ConfigureFromAssembly();
         return builder;
     }
+
+    private WatchminConfigurationContext.Application GetApplicationContext(WebApplication application) =>
+        new(Assemblies, application);
+
+    private WatchminConfigurationContext.Services GetBuilderContext(WebApplicationBuilder builder) =>
+        new(Assemblies, builder);
+
+    private IReadOnlySet<Assembly> Assemblies => new[] { GetType().Assembly, assembly }.ToFrozenSet();
 }

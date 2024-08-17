@@ -1,8 +1,9 @@
-﻿namespace Watchmin.Module;
+﻿using System.Reflection;
+
+namespace Watchmin.Module;
 
 public static class WatchminModuleBootstrap
 {
-    public static Task BootstrapAsync<TConfiguration>(string[]? args = null)
-        where TConfiguration : class, IWatchminModuleBootstrapperConfiguration, new() =>
-        new WatchminModuleBootstrapper<TConfiguration>(args).RunAsync();
+    public static Task BootstrapAsync(Assembly assembly, string[]? args = null) =>
+        new WatchminModuleBootstrapper(assembly, args).RunAsync();
 }
