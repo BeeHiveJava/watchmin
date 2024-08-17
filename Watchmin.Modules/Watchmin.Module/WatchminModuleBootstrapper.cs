@@ -5,7 +5,9 @@ namespace Watchmin.Module;
 public class WatchminModuleBootstrapper<TConfiguration>(string[]? args = null)
     where TConfiguration : class, IWatchminModuleBootstrapperConfiguration, new()
 {
-    private readonly TConfiguration _configuration = new();
+    private readonly WatchminModuleBootstrapperConfigurationComposite _configuration = new([
+        new TConfiguration()
+    ]);
 
     public Task RunAsync()
     {
