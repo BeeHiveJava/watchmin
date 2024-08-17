@@ -1,11 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Watchmin.Module.Abstractions", "Watchmin.Module.Abstractions\Watchmin.Module.Abstractions.csproj", "{059DD281-A703-4BCB-B0FF-934B1C13134E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Watchmin.Modules", "Watchmin.Modules\Watchmin.Modules.csproj", "{9F66FF5B-901D-4D41-B43D-0EE170565592}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Watchmin.Module", "Watchmin.Module\Watchmin.Module.csproj", "{9F66FF5B-901D-4D41-B43D-0EE170565592}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Watchmin.Modules.TestHost", "Watchmin.Modules.TestHost\Watchmin.Modules.TestHost.csproj", "{D2163DE1-BA9B-447A-BE9D-346887C4840A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Watchmin.Module.TestHost", "Watchmin.Module.TestHost\Watchmin.Module.TestHost.csproj", "{D2163DE1-BA9B-447A-BE9D-346887C4840A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Watchmin.Modules.Abstractions", "Watchmin.Modules.Abstractions\Watchmin.Modules.Abstractions.csproj", "{059DD281-A703-4BCB-B0FF-934B1C13134E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{7B678066-5229-4A15-8479-2D9B5A3DE65E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Watchmin.Modules.TestModule", "Watchmin.Modules.TestModule\Watchmin.Modules.TestModule.csproj", "{C32FA8B0-F637-482A-9A0F-046FFDE08DFD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Watchmin.Modules.TestModule.Tests", "Watchmin.Modules.TestModule.Tests\Watchmin.Modules.TestModule.Tests.csproj", "{B2A5CC26-E876-43FB-9343-147308C47492}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,7 +30,17 @@ Global
 		{D2163DE1-BA9B-447A-BE9D-346887C4840A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2163DE1-BA9B-447A-BE9D-346887C4840A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2163DE1-BA9B-447A-BE9D-346887C4840A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C32FA8B0-F637-482A-9A0F-046FFDE08DFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C32FA8B0-F637-482A-9A0F-046FFDE08DFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C32FA8B0-F637-482A-9A0F-046FFDE08DFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C32FA8B0-F637-482A-9A0F-046FFDE08DFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2A5CC26-E876-43FB-9343-147308C47492}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2A5CC26-E876-43FB-9343-147308C47492}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2A5CC26-E876-43FB-9343-147308C47492}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2A5CC26-E876-43FB-9343-147308C47492}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{C32FA8B0-F637-482A-9A0F-046FFDE08DFD} = {7B678066-5229-4A15-8479-2D9B5A3DE65E}
+		{B2A5CC26-E876-43FB-9343-147308C47492} = {7B678066-5229-4A15-8479-2D9B5A3DE65E}
 	EndGlobalSection
 EndGlobal

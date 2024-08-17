@@ -1,11 +1,11 @@
 ﻿using System.Collections.Frozen;
 using System.Reflection;
 using Microsoft.AspNetCore.Builder;
-using Watchmin.Module.Configuration;
+using Watchmin.Modules.Configuration;
 
-namespace Watchmin.Module;
+namespace Watchmin.Modules;
 
-internal class WatchminModuleBootstrapper(Assembly assembly, string[]? args = null)
+internal class WatchminModuleBootstrapper(Assembly assembly, string[] args)
 {
     public Task RunAsync()
     {
@@ -21,7 +21,7 @@ internal class WatchminModuleBootstrapper(Assembly assembly, string[]? args = nu
 
     private WebApplicationBuilder CreateBuilder()
     {
-        var builder = WebApplication.CreateBuilder(args ?? []);
+        var builder = WebApplication.CreateBuilder(args);
         GetBuilderContext(builder).ConfigureFromAssembly();
         return builder;
     }

@@ -1,7 +1,6 @@
-﻿using System.Reflection;
-using Watchmin.Module.Common;
+﻿using Watchmin.Modules.Common;
 
-namespace Watchmin.Module.Configuration;
+namespace Watchmin.Modules.Configuration;
 
 internal static class WatchminConfigurationExtensions
 {

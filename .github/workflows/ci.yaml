@@ -67,7 +67,7 @@ jobs:
       if: ${{ matrix.solution.nuget }}
 
     - name: Dotnet pack
-      run: dotnet pack --no-build --configuration "Release" --version-suffix "${{ steps.sha.outputs.value }}"
+      run: dotnet pack --no-build --configuration "Release" --version-suffix "pre.${{ steps.sha.outputs.value }}"
       working-directory: ${{ matrix.solution.name }}
       if: ${{ matrix.solution.nuget }}
 

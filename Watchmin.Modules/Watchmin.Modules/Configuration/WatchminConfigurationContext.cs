@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 
-namespace Watchmin.Module.Configuration;
+namespace Watchmin.Modules.Configuration;
 
 public static class WatchminConfigurationContext
 {

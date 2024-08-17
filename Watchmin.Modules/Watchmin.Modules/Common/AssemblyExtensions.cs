@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Watchmin.Module.Common;
+namespace Watchmin.Modules.Common;
 
 internal static class AssemblyExtensions
 {

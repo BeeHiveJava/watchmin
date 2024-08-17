@@ -1,4 +1,4 @@
-﻿namespace Watchmin.Module.Configuration;
+﻿namespace Watchmin.Modules.Configuration;
 
 public interface IWatchminConfiguration
 {

@@ -1,9 +1,9 @@
 ﻿using System.Reflection;
 
-namespace Watchmin.Module;
+namespace Watchmin.Modules;
 
 public static class WatchminModuleBootstrap
 {
-    public static Task BootstrapAsync(Assembly assembly, string[]? args = null) =>
+    public static Task BootstrapAsync(Assembly assembly, string[] args) =>
         new WatchminModuleBootstrapper(assembly, args).RunAsync();
 }

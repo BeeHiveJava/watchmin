@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Watchmin.Module.Configuration;
+namespace Watchmin.Modules.Configuration;
 
 public abstract class WatchminConfiguration : IWatchminConfiguration
 {

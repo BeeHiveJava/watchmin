@@ -1,8 +1,8 @@
 ﻿using MassTransit;
-using Watchmin.Module.Common;
-using Watchmin.Module.Configuration;
+using Watchmin.Modules.Common;
+using Watchmin.Modules.Configuration;
 
-namespace Watchmin.Module.Bus;
+namespace Watchmin.Modules.Bus;
 
 internal class Configuration : WatchminConfiguration
 {

@@ -5,8 +5,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
+using NUnit.Framework;
 
-namespace Watchmin.Module.TestHost;
+namespace Watchmin.Modules.TestHost;
 
 [ExcludeFromCodeCoverage]
 public abstract class WatchminModuleTestBase<TProgram> where TProgram : class

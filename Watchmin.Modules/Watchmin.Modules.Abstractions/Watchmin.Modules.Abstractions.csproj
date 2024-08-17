@@ -8,12 +8,12 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <PackageId>Watchmin.Module.Abstractions</PackageId>
+        <PackageId>Watchmin.Modules.Abstractions</PackageId>
         <VersionPrefix>0.0.0</VersionPrefix>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="MassTransit.Abstractions" Version="8.2.4" PrivateAssets="all"/>
+        <PackageReference Include="MassTransit.Abstractions" Version="8.2.4"/>
     </ItemGroup>
 
 </Project>

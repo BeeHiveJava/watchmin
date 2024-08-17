@@ -1,6 +1,6 @@
 ﻿using MassTransit;
 
-namespace Watchmin.Module.Bus;
+namespace Watchmin.Modules.Bus;
 
 public interface IBusConfigurator
 {
