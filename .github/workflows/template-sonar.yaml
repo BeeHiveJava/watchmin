@@ -1,0 +1,41 @@
+---
+name: sonar
+
+# yamllint disable-line rule:truthy
+on:
+  workflow_call:
+    inputs:
+      name:
+        type: string
+        required: true
+      project:
+        type: string
+        required: true
+    secrets:
+      SONAR_TOKEN:
+        required: true
+
+jobs:
+  sonar:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+      with:
+        fetch-depth: 0
+
+    - name: Run sonar
+      uses: highbyte/sonarscan-dotnet@v2.3.2
+      with:
+        sonarProjectKey: ${{ inputs.project }}
+        sonarProjectName: ${{ inputs.project }}
+        sonarOrganization: watchmin
+        dotnetBuildArguments: ${{ inputs.name }}
+        dotnetTestArguments: ${{ inputs.name }} --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+        sonarBeginArguments: >-
+          /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml"
+          /d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx"
+          /d:sonar.exclusions="**/Examples/**"
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

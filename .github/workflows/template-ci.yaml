@@ -3,25 +3,19 @@ name: ci
 
 # yamllint disable-line rule:truthy
 on:
-  pull_request:
-    branches: [main, releases/v*]
-
-  push:
-    branches: [main, releases/v*]
+  workflow_call:
+    inputs:
+      name:
+        type: string
+        required: true
+      nuget:
+        type: boolean
+        required: true
+        default: false
 
 jobs:
   ci:
-    name: ${{ matrix.solution.name }}
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        solution:
-        - name: Watchmin.Server
-        - name: Watchmin.Client
-        - name: Watchmin.Modules
-          nuget: ${{ github.ref_name == 'main' || startsWith(github.ref_name, 'releases/v') }}
-
     steps:
     - name: Checkout code
       uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
@@ -42,19 +36,19 @@ jobs:
         --password "${{ secrets.GITHUB_TOKEN }}"
         --store-password-in-clear-text
         "https://nuget.pkg.github.com/BeeHiveJava/index.json"
-      working-directory: ${{ matrix.solution.name }}
+      working-directory: ${{ inputs.name }}
 
     - name: Dotnet restore
       run: dotnet restore
-      working-directory: ${{ matrix.solution.name }}
+      working-directory: ${{ inputs.name }}
 
     - name: Dotnet build
       run: dotnet build --no-restore --configuration "Release"
-      working-directory: ${{ matrix.solution.name }}
+      working-directory: ${{ inputs.name }}
 
     - name: Dotnet test
       run: dotnet test --no-build --configuration "Release"
-      working-directory: ${{ matrix.solution.name }}
+      working-directory: ${{ inputs.name }}
 
     - name: Get commit sha
       run: |-
@@ -64,12 +58,12 @@ jobs:
           echo "value=" >> "$GITHUB_OUTPUT"
         fi
       id: sha
-      if: ${{ matrix.solution.nuget }}
+      if: ${{ inputs.nuget }}
 
     - name: Dotnet pack
       run: dotnet pack --no-build --configuration "Release" --version-suffix "pre.${{ steps.sha.outputs.value }}"
-      working-directory: ${{ matrix.solution.name }}
-      if: ${{ matrix.solution.nuget }}
+      working-directory: ${{ inputs.name }}
+      if: ${{ inputs.nuget }}
 
     - name: Dotnet push
       run: >-
@@ -77,5 +71,5 @@ jobs:
         --source "github"
         --api-key "${{ secrets.GITHUB_TOKEN }}"
         "**/*.nupkg"
-      working-directory: ${{ matrix.solution.name }}
-      if: ${{ matrix.solution.nuget }}
+      working-directory: ${{ inputs.name }}
+      if: ${{ inputs.nuget }}

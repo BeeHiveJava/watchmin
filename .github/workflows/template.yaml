@@ -1,0 +1,37 @@
+---
+name: template
+
+# yamllint disable-line rule:truthy
+on:
+  workflow_call:
+    inputs:
+      name:
+        type: string
+        required: true
+      project:
+        type: string
+        required: true
+      nuget:
+        type: boolean
+        required: true
+        default: false
+    secrets:
+      SONAR_TOKEN:
+        required: true
+
+jobs:
+  ci:
+    name: ${{ inputs.name }}
+    uses: ./.github/workflows/template-ci.yaml
+    secrets: inherit
+    with:
+      name: ${{ inputs.name }}
+      nuget: ${{ inputs.nuget && (github.ref_name == 'main' || startsWith(github.ref_name, 'releases/v')) }}
+
+  sonar:
+    name: ${{ inputs.name }}
+    uses: ./.github/workflows/template-sonar.yaml
+    secrets: inherit
+    with:
+      name: ${{ inputs.name }}
+      project: ${{ inputs.project }}

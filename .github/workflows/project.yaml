@@ -1,0 +1,34 @@
+---
+name: project
+
+# yamllint disable-line rule:truthy
+on:
+  pull_request:
+    branches: [main, releases/v*]
+
+  push:
+    branches: [main, releases/v*]
+
+jobs:
+  project:
+    name: ${{ matrix.solution.name }}
+    strategy:
+      fail-fast: false
+      matrix:
+        solution:
+        - name: Watchmin.Server
+          project: watchmin-server
+
+        - name: Watchmin.Client
+          project: watchmin-client
+
+        - name: Watchmin.Modules
+          project: watchmin-modules
+          nuget: true
+
+    uses: ./.github/workflows/template.yaml
+    secrets: inherit
+    with:
+      name: ${{ matrix.solution.name }}
+      project: ${{ matrix.solution.project }}
+      nuget: ${{ matrix.solution.nuget || false }}
